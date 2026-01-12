@@ -16,9 +16,7 @@ public class RoomService {
         this.roomDAO = new RoomDAO();
     }
 
-    /**
-     * Creates a new room.
-     */
+    
     public void createRoom(RoomType roomType, double pricePerDay) {
 
         if (roomType == null) {
@@ -37,9 +35,7 @@ public class RoomService {
         roomDAO.createRoom(room);
     }
 
-    /**
-     * Retrieves room by ID.
-     */
+    
     public Room getRoomById(int roomId) {
         if (roomId <= 0) {
             throw new InvalidInputException("Invalid room ID");
@@ -47,23 +43,17 @@ public class RoomService {
         return roomDAO.getRoomById(roomId);
     }
 
-    /**
-     * Retrieves all rooms.
-     */
+    
     public List<Room> getAllRooms() {
         return roomDAO.getAllRooms();
     }
 
-    /**
-     * Retrieves available rooms.
-     */
+    
     public List<Room> getAvailableRooms() {
         return roomDAO.getAvailableRooms();
     }
 
-    /**
-     * Retrieves available rooms by type.
-     */
+    
     public List<Room> getAvailableRoomsByType(RoomType roomType) {
         if (roomType == null) {
             throw new InvalidInputException("Room type cannot be null");
@@ -71,9 +61,7 @@ public class RoomService {
         return roomDAO.getAvailableRoomsByType(roomType);
     }
 
-    /**
-     * Updates room availability.
-     */
+   
     public void updateRoomAvailability(int roomId, boolean available) {
         if (roomId <= 0) {
             throw new InvalidInputException("Invalid room ID");
@@ -81,9 +69,7 @@ public class RoomService {
         roomDAO.updateRoomAvailability(roomId, available);
     }
 
-    /**
-     * Deletes room by ID.
-     */
+    
     public void deleteRoom(int roomId) {
         if (roomId <= 0) {
             throw new InvalidInputException("Invalid room ID");
