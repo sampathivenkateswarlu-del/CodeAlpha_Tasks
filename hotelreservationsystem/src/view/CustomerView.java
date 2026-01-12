@@ -17,9 +17,7 @@ public class CustomerView {
         this.scanner = new Scanner(System.in);
     }
 
-    /**
-     * Entry point for Customer Management Menu
-     */
+    
     public void showCustomerMenu() {
 
         int choice;
