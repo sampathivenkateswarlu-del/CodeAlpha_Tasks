@@ -122,9 +122,7 @@ public class ConsoleMenu {
         System.out.println("Student deleted successfully.");
     }
 
-    /**
-     * Safe integer input handling.
-     */
+    
     private int readInt() {
         while (true) {
             try {
