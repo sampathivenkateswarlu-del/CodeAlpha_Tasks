@@ -27,40 +27,38 @@ public class BookingService {
         this.roomDAO = new RoomDAO();
     }
 
-    /**
-     * Creates a new booking with full validation and correct flow.
-     */
+    
     public void createBooking(int customerId,
                               int roomId,
                               LocalDate checkInDate,
                               LocalDate checkOutDate) {
 
-        // 1. Validate dates
+        
         validateDates(checkInDate, checkOutDate);
 
-        // 2. Validate customer exists
+      
         Customer customer = customerDAO.getCustomerById(customerId);
         if (customer == null) {
             throw new InvalidInputException("Invalid customer ID: " + customerId);
         }
 
-        // 3. Validate room exists and availability
+        
         Room room = roomDAO.getRoomById(roomId);
         if (!room.isAvailable()) {
             throw new RoomNotAvailableException(
                     "Room is not available for booking. Room ID: " + roomId);
         }
 
-        // 4. Calculate stay duration
+       
         long numberOfDays = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
         if (numberOfDays <= 0) {
             throw new InvalidInputException("Check-out date must be after check-in date");
         }
 
-        // 5. Calculate total amount
+       
         double totalAmount = numberOfDays * room.getPricePerDay();
 
-        // 6. Create Booking entity
+      
         Booking booking = new Booking();
         booking.setCustomerId(customerId);
         booking.setRoomId(roomId);
@@ -69,16 +67,14 @@ public class BookingService {
         booking.setTotalAmount(totalAmount);
         booking.setStatus(BookingStatus.CONFIRMED);
 
-        // 7. Persist booking
+       
         bookingDAO.createBooking(booking);
 
-        // 8. Update room availability
+       
         roomDAO.updateRoomAvailability(roomId, false);
     }
 
-    /**
-     * Cancels an existing booking and frees the room.
-     */
+    
     public void cancelBooking(int bookingId) {
 
         Booking booking = bookingDAO.getBookingById(bookingId);
@@ -87,30 +83,24 @@ public class BookingService {
             throw new InvalidInputException("Booking is already cancelled");
         }
 
-        // Update booking status
+       
         bookingDAO.updateBookingStatus(bookingId, BookingStatus.CANCELLED);
 
-        // Make room available again
+      
         roomDAO.updateRoomAvailability(booking.getRoomId(), true);
     }
 
-    /**
-     * Retrieves booking by ID.
-     */
+    
     public Booking getBookingById(int bookingId) {
         return bookingDAO.getBookingById(bookingId);
     }
 
-    /**
-     * Retrieves all bookings.
-     */
+    
     public List<Booking> getAllBookings() {
         return bookingDAO.getAllBookings();
     }
 
-    /**
-     * Internal date validation.
-     */
+    
     private void validateDates(LocalDate checkIn, LocalDate checkOut) {
         if (checkIn == null || checkOut == null) {
             throw new InvalidInputException("Check-in and check-out dates cannot be null");
