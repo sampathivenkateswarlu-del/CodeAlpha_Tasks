@@ -1,0 +1,193 @@
+package model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import exception.HotelReservationException;
+import exception.RoomNotAvailableException;
+import model.entity.Room;
+import model.enums.RoomType;
+import util.DBConnectionUtil;
+
+public class RoomDAO {
+
+    private static final String INSERT_ROOM_SQL =
+            "INSERT INTO room (room_type, available, price_per_day) VALUES (?, ?, ?)";
+
+    private static final String SELECT_BY_ID_SQL =
+            "SELECT * FROM room WHERE room_id = ?";
+
+    private static final String SELECT_ALL_SQL =
+            "SELECT * FROM room";
+
+    private static final String SELECT_AVAILABLE_BY_TYPE_SQL =
+            "SELECT * FROM room WHERE room_type = ? AND available = true";
+
+    private static final String UPDATE_AVAILABILITY_SQL =
+            "UPDATE room SET available = ? WHERE room_id = ?";
+
+    private static final String DELETE_SQL =
+            "DELETE FROM room WHERE room_id = ?";
+
+    /**
+     * Creates a new room.
+     */
+    public void createRoom(Room room) {
+        validateRoom(room);
+
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_ROOM_SQL)) {
+
+            statement.setString(1, room.getRoomType().name());
+            statement.setBoolean(2, room.isAvailable());
+            statement.setDouble(3, room.getPricePerDay());
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new HotelReservationException("Failed to create room", e);
+        }
+    }
+
+    /**
+     * Retrieves a room by ID.
+     */
+    public Room getRoomById(int roomId) {
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_SQL)) {
+
+            statement.setInt(1, roomId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToRoom(rs);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new HotelReservationException("Failed to retrieve room", e);
+        }
+
+        throw new RoomNotAvailableException("Room not found with ID: " + roomId);
+    }
+
+    /**
+     * Retrieves all rooms.
+     */
+    public List<Room> getAllRooms() {
+        List<Room> rooms = new ArrayList<>();
+
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_SQL);
+             ResultSet rs = statement.executeQuery()) {
+
+            while (rs.next()) {
+                rooms.add(mapResultSetToRoom(rs));
+            }
+
+        } catch (SQLException e) {
+            throw new HotelReservationException("Failed to retrieve rooms", e);
+        }
+
+        return rooms;
+    }
+
+    /**
+     * Retrieves available rooms by room type.
+     */
+    public List<Room> getAvailableRoomsByType(RoomType roomType) {
+        List<Room> rooms = new ArrayList<>();
+
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_AVAILABLE_BY_TYPE_SQL)) {
+
+            statement.setString(1, roomType.name());
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    rooms.add(mapResultSetToRoom(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new HotelReservationException("Failed to retrieve available rooms", e);
+        }
+
+        return rooms;
+    }
+
+    /**
+     * Updates room availability.
+     */
+    public void updateRoomAvailability(int roomId, boolean available) {
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_AVAILABILITY_SQL)) {
+
+            statement.setBoolean(1, available);
+            statement.setInt(2, roomId);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new RoomNotAvailableException("Room not found with ID: " + roomId);
+            }
+
+        } catch (SQLException e) {
+            throw new HotelReservationException("Failed to update room availability", e);
+        }
+    }
+
+    /**
+     * Deletes a room by ID.
+     */
+    public void deleteRoom(int roomId) {
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
+
+            statement.setInt(1, roomId);
+
+            int rowsDeleted = statement.executeUpdate();
+            if (rowsDeleted == 0) {
+                throw new RoomNotAvailableException("Room not found with ID: " + roomId);
+            }
+
+        } catch (SQLException e) {
+            throw new HotelReservationException("Failed to delete room", e);
+        }
+    }
+
+    /**
+     * Maps ResultSet to Room entity.
+     */
+    private Room mapResultSetToRoom(ResultSet rs) throws SQLException {
+        Room room = new Room();
+        room.setRoomId(rs.getInt("room_id"));
+        room.setRoomType(RoomType.valueOf(rs.getString("room_type")));
+        room.setAvailable(rs.getBoolean("available"));
+        room.setPricePerDay(rs.getDouble("price_per_day"));
+        return room;
+    }
+
+    /**
+     * Validates room object.
+     */
+    private void validateRoom(Room room) {
+        if (room == null) {
+            throw new RoomNotAvailableException("Room cannot be null");
+        }
+        if (room.getRoomType() == null) {
+            throw new RoomNotAvailableException("Room type cannot be null");
+        }
+        if (room.getPricePerDay() <= 0) {
+            throw new RoomNotAvailableException("Room price must be greater than zero");
+        }
+    }
+
+    public List<Room> getAvailableRooms() {
+        return roomDAO.getAvailableRooms();
+    }
+}
+

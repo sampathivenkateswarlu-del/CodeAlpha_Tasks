@@ -1,0 +1,75 @@
+package util;
+
+import java.util.List;
+
+public final class GradeCalculator {
+
+    // Private constructor to prevent instantiation
+    private GradeCalculator() {
+    }
+
+    /**
+     * Calculates the total marks from a dynamic list of subject marks.
+     */
+    public static int calculateTotalMarks(List<Integer> subjectMarks) {
+        if (subjectMarks == null || subjectMarks.isEmpty()) {
+            return 0;
+        }
+
+        int total = 0;
+        for (int mark : subjectMarks) {
+            total += mark;
+        }
+        return total;
+    }
+
+    /**
+     * Calculates the average marks.
+     */
+    public static double calculateAverage(int totalMarks, int subjectCount) {
+        if (subjectCount <= 0) {
+            return 0.0;
+        }
+        return (double) totalMarks / subjectCount;
+    }
+
+    /**
+     * Determines grade based on average marks.
+     */
+    public static char calculateGrade(double averageMarks) {
+
+        if (averageMarks >= 90) {
+            return 'A';
+        } else if (averageMarks >= 75) {
+            return 'B';
+        } else if (averageMarks >= 60) {
+            return 'C';
+        } else if (averageMarks >= 40) {
+            return 'D';
+        } else {
+            return 'F';
+        }
+    }
+
+    /**
+     * Centralized method to compute all derived values for a student.
+     * This method is typically called from the Service layer.
+     */
+    public static void calculateStudentResult(model.Student student) {
+
+        if (student == null || student.getSubjectMarks() == null) {
+            return;
+        }
+
+        int totalMarks = calculateTotalMarks(student.getSubjectMarks());
+        double averageMarks = calculateAverage(
+                totalMarks,
+                student.getSubjectMarks().size()
+        );
+        char grade = calculateGrade(averageMarks);
+
+        student.setTotalMarks(totalMarks);
+        student.setAverageMarks(averageMarks);
+        student.setGrade(grade);
+    }
+}

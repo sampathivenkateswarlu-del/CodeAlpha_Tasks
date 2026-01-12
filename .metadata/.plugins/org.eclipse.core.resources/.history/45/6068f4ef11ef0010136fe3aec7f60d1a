@@ -1,0 +1,97 @@
+package view;
+
+import java.util.Scanner;
+
+public class MainMenuView {
+
+    private final BookingView bookingView;
+    private final PaymentView paymentView;
+    private final RoomView roomView;
+    private final HistoryView historyView;
+    private final Scanner scanner;
+
+    public MainMenuView() {
+        this.bookingView = new BookingView();
+        this.paymentView = new PaymentView();
+        this.roomView = new RoomView();
+        this.historyView = new HistoryView();
+        this.scanner = new Scanner(System.in);
+    }
+
+    /**
+     * Application entry menu
+     */
+    public void showMainMenu() {
+
+        int choice;
+
+        do {
+            System.out.println("\n=====================================");
+            System.out.println("  HOTEL RESERVATION SYSTEM - STARTED  ");
+            System.out.println("=====================================");
+            System.out.println("1. Booking Management");
+            System.out.println("2. Payment Management");
+            System.out.println("3. Room Management");
+            System.out.println("4. View History");
+            System.out.println("0. Exit");
+            System.out.print("Select an option: ");
+
+            choice = readInt();
+
+            switch (choice) {
+                case 1:
+                    bookingView.showBookingMenu();
+                    break;
+
+                case 2:
+                    paymentView.showPaymentMenu();
+                    break;
+
+                case 3:
+                    roomView.showRoomMenu();
+                    break;
+
+                case 4:
+                    historyView.showHistoryMenu();
+                    break;
+
+                case 0:
+                    System.out.println("Exiting Hotel Reservation System...");
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+
+        } while (choice != 0);
+
+        closeResources();
+    }
+
+    /**
+     * Utility: Safe integer input
+     */
+    private int readInt() {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Invalid input. Enter a number: ");
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
+
+    /**
+     * Graceful shutdown
+     */
+    private void closeResources() {
+        scanner.close();
+        System.out.println("System closed successfully.");
+    }
+
+    /**
+     * Main method – application start point
+     */
+    public static void main(String[] args) {
+        MainMenuView mainMenu = new MainMenuView();
+        mainMenu.showMainMenu();
+    }
+}

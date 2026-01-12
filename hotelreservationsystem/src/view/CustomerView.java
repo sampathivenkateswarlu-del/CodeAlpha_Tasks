@@ -1,0 +1,131 @@
+package view;
+
+import java.util.List;
+import java.util.Scanner;
+
+import exception.InvalidInputException;
+import model.entity.Customer;
+import model.service.CustomerService;
+
+public class CustomerView {
+
+    private final CustomerService customerService;
+    private final Scanner scanner;
+
+    public CustomerView() {
+        this.customerService = new CustomerService();
+        this.scanner = new Scanner(System.in);
+    }
+
+    /**
+     * Entry point for Customer Management Menu
+     */
+    public void showCustomerMenu() {
+
+        int choice;
+
+        do {
+            System.out.println("\n--- CUSTOMER MENU ---");
+            System.out.println("1. Create Customer");
+            System.out.println("2. View Customer By ID");
+            System.out.println("3. View All Customers");
+            System.out.println("0. Back");
+            System.out.print("Select an option: ");
+
+            choice = readInt();
+
+            switch (choice) {
+                case 1:
+                    createCustomer();
+                    break;
+                case 2:
+                    viewCustomerById();
+                    break;
+                case 3:
+                    viewAllCustomers();
+                    break;
+                case 0:
+                    System.out.println("Returning to main menu...");
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
+
+        } while (choice != 0);
+    }
+
+    private void createCustomer() {
+
+        try {
+            System.out.print("Enter Customer Name: ");
+            String name = scanner.next();
+
+            System.out.print("Enter Customer Email: ");
+            String email = scanner.next();
+
+            System.out.print("Enter Customer Phone: ");
+            String phone = scanner.next();
+
+            customerService.createCustomer(name, email, phone);
+
+            System.out.println("Customer created successfully.");
+
+        } catch (InvalidInputException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void viewCustomerById() {
+
+        try {
+            System.out.print("Enter Customer ID: ");
+            int customerId = readInt();
+
+            Customer customer = customerService.getCustomerById(customerId);
+
+            if (customer == null) {
+                System.out.println("Customer not found.");
+                return;
+            }
+
+            printCustomer(customer);
+
+        } catch (InvalidInputException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void viewAllCustomers() {
+
+        List<Customer> customers = customerService.getAllCustomers();
+
+        if (customers.isEmpty()) {
+            System.out.println("No customers found.");
+            return;
+        }
+
+        System.out.println("\n--- ALL CUSTOMERS ---");
+
+        for (Customer customer : customers) {
+            printCustomer(customer);
+        }
+    }
+
+    private void printCustomer(Customer customer) {
+
+        System.out.println("--------------------------------------");
+        System.out.println("Customer ID   : " + customer.getCustomerId());
+        System.out.println("Name          : " + customer.getName());
+        System.out.println("Email         : " + customer.getEmail());
+        System.out.println("Phone         : " + customer.getPhoneNumber());
+        System.out.println("--------------------------------------");
+    }
+
+    private int readInt() {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Invalid input. Enter a number: ");
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
+}

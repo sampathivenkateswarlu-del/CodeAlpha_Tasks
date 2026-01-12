@@ -1,0 +1,93 @@
+package model.service;
+
+import java.util.List;
+
+import exception.InvalidInputException;
+
+import model.dao.RoomDAO;
+import model.entity.Room;
+import model.enums.RoomType;
+
+public class RoomService {
+
+    private final RoomDAO roomDAO;
+
+    public RoomService() {
+        this.roomDAO = new RoomDAO();
+    }
+
+    /**
+     * Creates a new room.
+     */
+    public void createRoom(RoomType roomType, double pricePerDay) {
+
+        if (roomType == null) {
+            throw new InvalidInputException("Room type cannot be null");
+        }
+
+        if (pricePerDay <= 0) {
+            throw new InvalidInputException("Room price must be greater than zero");
+        }
+
+        Room room = new Room();
+        room.setRoomType(roomType);
+        room.setPricePerDay(pricePerDay);
+        room.setAvailable(true);
+
+        roomDAO.createRoom(room);
+    }
+
+    /**
+     * Retrieves room by ID.
+     */
+    public Room getRoomById(int roomId) {
+        if (roomId <= 0) {
+            throw new InvalidInputException("Invalid room ID");
+        }
+        return roomDAO.getRoomById(roomId);
+    }
+
+    /**
+     * Retrieves all rooms.
+     */
+    public List<Room> getAllRooms() {
+        return roomDAO.getAllRooms();
+    }
+
+    /**
+     * Retrieves available rooms.
+     */
+    public List<Room> getAvailableRooms() {
+        return roomDAO.getAvailableRooms();
+    }
+
+    /**
+     * Retrieves available rooms by type.
+     */
+    public List<Room> getAvailableRoomsByType(RoomType roomType) {
+        if (roomType == null) {
+            throw new InvalidInputException("Room type cannot be null");
+        }
+        return roomDAO.getAvailableRoomsByType(roomType);
+    }
+
+    /**
+     * Updates room availability.
+     */
+    public void updateRoomAvailability(int roomId, boolean available) {
+        if (roomId <= 0) {
+            throw new InvalidInputException("Invalid room ID");
+        }
+        roomDAO.updateRoomAvailability(roomId, available);
+    }
+
+    /**
+     * Deletes room by ID.
+     */
+    public void deleteRoom(int roomId) {
+        if (roomId <= 0) {
+            throw new InvalidInputException("Invalid room ID");
+        }
+        roomDAO.deleteRoom(roomId);
+    }
+}

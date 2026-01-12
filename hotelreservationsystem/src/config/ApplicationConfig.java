@@ -1,0 +1,12 @@
+package config;
+
+public final class ApplicationConfig {
+	private ApplicationConfig() { 
+		//Prevent instantiation 
+		}
+
+	public static final String APPLICATION_NAME = "Hotel Reservation System";
+	public static final String APPLICATION_VERSION = "1.0.0";
+	public static final int MAX_BOOKING_DAYS = 30;
+	public static final int CANCELLATION_GRACE_PERIOD_DAYS = 2;
+}

@@ -1,0 +1,158 @@
+package dao;
+
+import model.Student;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentDAO {
+
+    private final Connection connection;
+
+    public StudentDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    /**
+     * Saves student and subject marks using a transaction.
+     */
+    public void saveStudent(Student student) throws SQLException {
+
+        String insertStudentSql =
+                "INSERT INTO student (student_id, name, total_marks, average_marks, grade) " +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        String insertMarksSql =
+                "INSERT INTO student (student_id, subject_no, marks) " +
+                "VALUES (?, ?, ?)";
+
+        PreparedStatement studentStmt = null;
+        PreparedStatement marksStmt = null;
+
+        try {
+            connection.setAutoCommit(false);
+
+            // Insert into student table
+            studentStmt = connection.prepareStatement(insertStudentSql);
+            studentStmt.setInt(1, student.getStudentId());
+            studentStmt.setString(2, student.getName());
+            studentStmt.setInt(3, student.getTotalMarks());
+            studentStmt.setDouble(4, student.getAverageMarks());
+            studentStmt.setString(5, String.valueOf(student.getGrade()));
+            studentStmt.executeUpdate();
+
+            // Insert subject marks
+            marksStmt = connection.prepareStatement(insertMarksSql);
+
+            int subjectNo = 1;
+            for (int mark : student.getSubjectMarks()) {
+                marksStmt.setInt(1, student.getStudentId());
+                marksStmt.setInt(2, subjectNo++);
+                marksStmt.setInt(3, mark);
+                marksStmt.addBatch();
+            }
+
+            marksStmt.executeBatch();
+            connection.commit();
+
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            if (studentStmt != null) studentStmt.close();
+            if (marksStmt != null) marksStmt.close();
+            connection.setAutoCommit(true);
+        }
+    }
+
+    /**
+     * Fetch a student with all subject marks by student ID.
+     */
+    public Student getStudentById(int studentId) throws SQLException {
+
+        String studentSql =
+                "SELECT student_id, name, total_marks, average_marks, grade " +
+                "FROM student WHERE student_id = ?";
+
+        String marksSql =
+                "SELECT marks FROM student_subject_marks " +
+                "WHERE student_id = ? ORDER BY subject_no";
+
+        Student student = null;
+
+        try (PreparedStatement studentStmt = connection.prepareStatement(studentSql);
+             PreparedStatement marksStmt = connection.prepareStatement(marksSql)) {
+
+            // Fetch student
+            studentStmt.setInt(1, studentId);
+            ResultSet rsStudent = studentStmt.executeQuery();
+
+            if (rsStudent.next()) {
+                student = new Student();
+                student.setStudentId(rsStudent.getInt("student_id"));
+                student.setName(rsStudent.getString("name"));
+                student.setTotalMarks(rsStudent.getInt("total_marks"));
+                student.setAverageMarks(rsStudent.getDouble("average_marks"));
+                student.setGrade(rsStudent.getString("grade").charAt(0));
+            } else {
+                return null;
+            }
+
+            // Fetch subject marks
+            marksStmt.setInt(1, studentId);
+            ResultSet rsMarks = marksStmt.executeQuery();
+
+            List<Integer> marks = new ArrayList<>();
+            while (rsMarks.next()) {
+                marks.add(rsMarks.getInt("marks"));
+            }
+            student.setSubjectMarks(marks);
+        }
+
+        return student;
+    }
+
+    /**
+     * Fetch all students (without subject marks).
+     * Use getStudentById if marks are required.
+     */
+    public List<Student> getAllStudents() throws SQLException {
+
+        String sql =
+                "SELECT student_id, name, total_marks, average_marks, grade " +
+                "FROM student";
+
+        List<Student> students = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Student student = new Student();
+                student.setStudentId(rs.getInt("student_id"));
+                student.setName(rs.getString("name"));
+                student.setTotalMarks(rs.getInt("total_marks"));
+                student.setAverageMarks(rs.getDouble("average_marks"));
+                student.setGrade(rs.getString("grade").charAt(0));
+                students.add(student);
+            }
+        }
+
+        return students;
+    }
+
+    /**
+     * Deletes a student (subject marks deleted via cascade).
+     */
+    public void deleteStudent(int studentId) throws SQLException {
+
+        String sql = "DELETE FROM student WHERE student_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, studentId);
+            stmt.executeUpdate();
+        }
+    }
+}
+

@@ -1,0 +1,44 @@
+package service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import model.entity.Room;
+import model.enums.RoomStatus;
+import model.enums.RoomType;
+
+public class RoomService {
+
+    private final List<Room> rooms = new ArrayList<>();
+
+    // Initialize rooms (IMPORTANT)
+    public RoomService() {
+        rooms.add(new Room(101, RoomType.STANDARD, RoomStatus.AVAILABLE));
+        rooms.add(new Room(102, RoomType.STANDARD, RoomStatus.AVAILABLE));
+        rooms.add(new Room(201, RoomType.DELUXE, RoomStatus.AVAILABLE));
+        rooms.add(new Room(301, RoomType.SUITE, RoomStatus.AVAILABLE));
+    }
+
+    public Room getAvailableRoom(RoomType roomType) {
+        for (Room room : rooms) {
+            if (room.getRoomType() == roomType &&
+                room.getStatus() == RoomStatus.AVAILABLE) {
+                return room;
+            }
+        }
+        return null;
+    }
+
+    public void updateRoomStatus(int roomId, RoomStatus status) {
+        for (Room room : rooms) {
+            if (room.getRoomId() == roomId) {
+                room.setStatus(status);
+                return;
+            }
+        }
+    }
+
+    public List<Room> getAllRooms() {
+        return rooms;
+    }
+}

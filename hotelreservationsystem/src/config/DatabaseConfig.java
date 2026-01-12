@@ -1,0 +1,11 @@
+package config;
+
+public final class DatabaseConfig {
+	private DatabaseConfig() { // Prevent instantiation
+	}
+
+	public static final String DB_URL = "jdbc:mysql://localhost:3306/HOTELRESERVATIONSYSTEM";
+	public static final String DB_USERNAME = "root";
+	public static final String DB_PASSWORD = "root";
+	public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+}
