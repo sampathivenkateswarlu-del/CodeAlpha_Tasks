@@ -32,9 +32,7 @@ public class BookingDAO {
     private static final String DELETE_SQL =
             "DELETE FROM booking WHERE booking_id = ?";
 
-    /**
-     * Creates a new booking record.
-     */
+    
     public void createBooking(Booking booking) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_BOOKING_SQL)) {
@@ -53,9 +51,7 @@ public class BookingDAO {
         }
     }
 
-    /**
-     * Retrieves a booking by its ID.
-     */
+    
     public Booking getBookingById(int bookingId) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_SQL)) {
@@ -75,9 +71,7 @@ public class BookingDAO {
         throw new BookingNotFoundException("Booking not found with ID: " + bookingId);
     }
 
-    /**
-     * Retrieves all bookings.
-     */
+    
     public List<Booking> getAllBookings() {
         List<Booking> bookings = new ArrayList<>();
 
@@ -96,9 +90,7 @@ public class BookingDAO {
         return bookings;
     }
 
-    /**
-     * Updates booking status.
-     */
+   
     public void updateBookingStatus(int bookingId, BookingStatus status) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_STATUS_SQL)) {
@@ -116,9 +108,7 @@ public class BookingDAO {
         }
     }
 
-    /**
-     * Deletes a booking by ID.
-     */
+    
     public void deleteBooking(int bookingId) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
@@ -135,9 +125,7 @@ public class BookingDAO {
         }
     }
 
-    /**
-     * Maps ResultSet to Booking entity.
-     */
+    
     private Booking mapResultSetToBooking(ResultSet rs) throws SQLException {
         Booking booking = new Booking();
         booking.setBookingId(rs.getInt("booking_id"));
