@@ -1,13 +1,9 @@
--- ============================================
--- DATABASE: HOTELRESERVATIONSYSTEM
--- ============================================
+
 
 CREATE DATABASE IF NOT EXISTS HOTELRESERVATIONSYSTEM;
 USE HOTELRESERVATIONSYSTEM;
 
--- ============================================
--- TABLE: CUSTOMER
--- ============================================
+
 CREATE TABLE IF NOT EXISTS CUSTOMER (
     CUSTOMER_ID INT AUTO_INCREMENT PRIMARY KEY,
     NAME VARCHAR(100) NOT NULL,
@@ -16,9 +12,7 @@ CREATE TABLE IF NOT EXISTS CUSTOMER (
 );
 
 select * from CUSTOMER;
--- ============================================
--- TABLE: ROOM
--- ============================================
+
 CREATE TABLE IF NOT EXISTS ROOM (
     ROOM_ID INT AUTO_INCREMENT PRIMARY KEY,
     ROOM_TYPE ENUM('STANDARD', 'DELUXE', 'SUITE') NOT NULL,
@@ -26,9 +20,7 @@ CREATE TABLE IF NOT EXISTS ROOM (
     PRICE_PER_DAY DOUBLE NOT NULL CHECK (PRICE_PER_DAY > 0)
 );
 
--- ============================================
--- TABLE: BOOKING
--- ============================================
+
 CREATE TABLE IF NOT EXISTS BOOKING (
     BOOKING_ID INT AUTO_INCREMENT PRIMARY KEY,
     CUSTOMER_ID INT NOT NULL,
@@ -52,13 +44,6 @@ CREATE TABLE IF NOT EXISTS BOOKING (
 select * from BOOKING;
 
 
-
-
-
-
--- ============================================
--- TABLE: PAYMENT
--- ============================================
 CREATE TABLE IF NOT EXISTS PAYMENT (
     PAYMENT_ID INT AUTO_INCREMENT PRIMARY KEY,
     BOOKING_ID INT NOT NULL,
