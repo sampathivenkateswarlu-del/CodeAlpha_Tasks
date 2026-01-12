@@ -6,13 +6,11 @@ import java.util.List;
 
 public final class GradeCalculator {
 
-    // Prevent instantiation
+   
     private GradeCalculator() {
     }
 
-    /**
-     * Calculates total marks from dynamic subject marks.
-     */
+    
     public static int calculateTotalMarks(List<Integer> subjectMarks) {
         if (subjectMarks == null || subjectMarks.isEmpty()) {
             return 0;
@@ -25,9 +23,7 @@ public final class GradeCalculator {
         return total;
     }
 
-    /**
-     * Calculates average marks.
-     */
+   
     public static double calculateAverageMarks(int totalMarks, int subjectCount) {
         if (subjectCount <= 0) {
             return 0.0;
@@ -35,9 +31,7 @@ public final class GradeCalculator {
         return (double) totalMarks / subjectCount;
     }
 
-    /**
-     * Determines grade based on average marks.
-     */
+    
     public static char calculateGrade(double averageMarks) {
 
         if (averageMarks >= 90) {
@@ -53,11 +47,7 @@ public final class GradeCalculator {
         }
     }
 
-    /**
-     * Calculates total, average, and grade for a student.
-     * This method is intended to be called from the Service layer
-     * BEFORE persisting the student using DAO.
-     */
+    
     public static void calculateStudentResult(Student student) {
 
         if (student == null || student.getSubjectMarks() == null) {
