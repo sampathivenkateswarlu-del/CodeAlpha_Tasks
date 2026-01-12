@@ -13,7 +13,7 @@ public class HistoryView {
 	private final PaymentDAO paymentDAO = new PaymentDAO();
 	private final Scanner scanner = new Scanner(System.in);
 
-	/** * Displays complete booking history. */
+	
 	public void viewBookingHistory() {
 		try {
 			List<Booking> bookings = bookingDAO.getAllBookings();
@@ -30,7 +30,7 @@ public class HistoryView {
 		}
 	}
 
-	/** * Displays payment history for a specific booking. */
+	
 	public void viewPaymentHistoryByBooking() {
 		try {
 			System.out.print("Enter Booking ID: ");
@@ -50,7 +50,7 @@ public class HistoryView {
 		}
 	}
 
-	/** * Displays complete payment history. */
+	
 	public void viewAllPaymentHistory() {
 		try {
 			List<Payment> payments = paymentDAO.getAllPayments();
@@ -67,7 +67,7 @@ public class HistoryView {
 		}
 	}
 
-	/* ========================= HELPER METHODS ========================= */ private void printBooking(
+	 private void printBooking(
 			Booking booking) {
 		System.out.println("-----------------------------------");
 		System.out.println("Booking ID : " + booking.getBookingId());
