@@ -1,7 +1,7 @@
 package config;
 
 public final class DatabaseConfig {
-	private DatabaseConfig() { // Prevent instantiation
+	private DatabaseConfig() { 
 	}
 
 	public static final String DB_URL = "jdbc:mysql://localhost:3306/HOTELRESERVATIONSYSTEM";
