@@ -2,7 +2,7 @@ package config;
 
 public final class ApplicationConfig {
 	private ApplicationConfig() { 
-		//Prevent instantiation 
+		
 		}
 
 	public static final String APPLICATION_NAME = "Hotel Reservation System";
