@@ -8,7 +8,7 @@ public class Student {
     private int studentId;
     private String name;
 
-    // Dynamic subject marks
+   
     private List<Integer> subjectMarks;
 
     private int totalMarks;
