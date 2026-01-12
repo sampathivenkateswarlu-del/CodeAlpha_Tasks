@@ -20,7 +20,7 @@ public class RoomDAO {
 	private static final String UPDATE_AVAILABILITY_SQL = "UPDATE ROOM SET available = ? WHERE room_id = ?";
 	private static final String DELETE_SQL = "DELETE FROM ROOM WHERE room_id = ?";
 
-	/** * Creates a new room. */
+	
 	public void createRoom(Room room) {
 		validateRoom(room);
 		try (Connection connection = DBConnectionUtil.getConnection();
@@ -34,7 +34,7 @@ public class RoomDAO {
 		}
 	}
 
-	/** * Retrieves a room by ID. */
+	
 	public Room getRoomById(int roomId) {
 		try (Connection connection = DBConnectionUtil.getConnection();
 				PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_SQL)) {
@@ -50,7 +50,7 @@ public class RoomDAO {
 		throw new RoomNotAvailableException("Room not found with ID: " + roomId);
 	}
 
-	/** * Retrieves all rooms. */
+	
 	public List<Room> getAllRooms() {
 		List<Room> rooms = new ArrayList<>();
 		try (Connection connection = DBConnectionUtil.getConnection();
@@ -65,7 +65,7 @@ public class RoomDAO {
 		return rooms;
 	}
 
-	/** * Retrieves available rooms by room type. */
+	
 	public List<Room> getAvailableRoomsByType(RoomType roomType) {
 		List<Room> rooms = new ArrayList<>();
 		try (Connection connection = DBConnectionUtil.getConnection();
@@ -82,7 +82,7 @@ public class RoomDAO {
 		return rooms;
 	}
 
-	/** * Updates room availability. */
+	
 	public void updateRoomAvailability(int roomId, boolean available) {
 		try (Connection connection = DBConnectionUtil.getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_AVAILABILITY_SQL)) {
@@ -97,7 +97,7 @@ public class RoomDAO {
 		}
 	}
 
-	/** * Deletes a room by ID. */
+	
 	public void deleteRoom(int roomId) {
 		try (Connection connection = DBConnectionUtil.getConnection();
 				PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
@@ -111,7 +111,7 @@ public class RoomDAO {
 		}
 	}
 
-	/** * Maps ResultSet to Room entity. */
+	
 	private Room mapResultSetToRoom(ResultSet rs) throws SQLException {
 		Room room = new Room();
 		room.setRoomId(rs.getInt("room_id"));
@@ -121,7 +121,7 @@ public class RoomDAO {
 		return room;
 	}
 
-	/** * Validates room object. */
+	
 	private void validateRoom(Room room) {
 		if (room == null) {
 			throw new RoomNotAvailableException("Room cannot be null");
