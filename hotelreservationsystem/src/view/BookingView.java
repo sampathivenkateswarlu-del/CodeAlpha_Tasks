@@ -19,7 +19,7 @@ public class BookingView {
 	private final RoomDAO roomDAO = new RoomDAO();
 	private final Scanner scanner = new Scanner(System.in);
 
-	/** * Entry point for booking flow. */
+	
 	public void createBooking() {
 		try {
 			System.out.println("\n=== CREATE NEW BOOKING ===");
@@ -55,7 +55,7 @@ public class BookingView {
 		}
 	}
 
-	/** * Displays all bookings. */
+	
 	public void viewAllBookings() {
 		try {
 			List<Booking> bookings = bookingDAO.getAllBookings();
@@ -72,7 +72,7 @@ public class BookingView {
 		}
 	}
 
-	/** * Cancels a booking. */
+	
 	public void cancelBooking() {
 		try {
 			System.out.println("\n=== CANCEL BOOKING ===");
@@ -86,7 +86,7 @@ public class BookingView {
 		}
 	}
 
-	/* ========================= HELPER METHODS ========================= */ private RoomType readRoomType() {
+	 private RoomType readRoomType() {
 		while (true) {
 			System.out.println("Select Room Type:");
 			System.out.println("1. STANDARD");
