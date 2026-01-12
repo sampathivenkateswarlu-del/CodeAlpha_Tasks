@@ -46,7 +46,7 @@ public class MainMenuView {
         }
     }
 
-    /* ========================= MENUS ========================= */
+    
 
     private void printMainMenu() {
         System.out.println("\n========== MAIN MENU ==========");
@@ -201,7 +201,7 @@ public class MainMenuView {
         }
     }
 
-    /* ========================= HELPER ========================= */
+   
 
     private int readInt(String message) {
         System.out.print(message);
