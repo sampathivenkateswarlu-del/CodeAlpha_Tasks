@@ -17,7 +17,7 @@ public class PaymentView {
 	private final BookingDAO bookingDAO = new BookingDAO();
 	private final Scanner scanner = new Scanner(System.in);
 
-	/** * Entry point for payment processing. */
+	
 	public void makePayment() {
 		try {
 			System.out.println("\n=== MAKE PAYMENT ===");
@@ -54,7 +54,7 @@ public class PaymentView {
 		}
 	}
 
-	/** * View all payments. */
+	
 	public void viewAllPayments() {
 		try {
 			List<Payment> payments = paymentDAO.getAllPayments();
@@ -71,7 +71,7 @@ public class PaymentView {
 		}
 	}
 
-	/** * View payments by booking ID. */
+	
 	public void viewPaymentsByBooking() {
 		try {
 			int bookingId = readInt("Enter Booking ID: ");
@@ -89,7 +89,7 @@ public class PaymentView {
 		}
 	}
 
-	/* ========================= HELPER METHODS ========================= */ private int readInt(String message) {
+	 private int readInt(String message) {
 		System.out.print(message);
 		int value = scanner.nextInt();
 		scanner.nextLine();
