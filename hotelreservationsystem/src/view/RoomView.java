@@ -11,7 +11,7 @@ public class RoomView {
 	private final RoomDAO roomDAO = new RoomDAO();
 	private final Scanner scanner = new Scanner(System.in);
 
-	/** * Creates a new room. */
+	
 	public void addRoom() {
 		try {
 			System.out.println("\n=== ADD NEW ROOM ===");
@@ -30,7 +30,7 @@ public class RoomView {
 		}
 	}
 
-	/** * Displays all rooms. */
+	
 	public void viewAllRooms() {
 		try {
 			List<Room> rooms = roomDAO.getAllRooms();
@@ -47,7 +47,7 @@ public class RoomView {
 		}
 	}
 
-	/** * Displays available rooms by type. */
+	
 	public void viewAvailableRoomsByType() {
 		try {
 			RoomType roomType = readRoomType();
@@ -65,7 +65,7 @@ public class RoomView {
 		}
 	}
 
-	/** * Updates room availability. */
+	
 	public void updateRoomAvailability() {
 		try {
 			System.out.println("\n=== UPDATE ROOM AVAILABILITY ===");
@@ -80,7 +80,7 @@ public class RoomView {
 		}
 	}
 
-	/** * Deletes a room. */
+	
 	public void deleteRoom() {
 		try {
 			int roomId = readInt("Enter Room ID to delete: ");
@@ -91,7 +91,7 @@ public class RoomView {
 		}
 	}
 
-	/* ========================= HELPER METHODS ========================= */ private RoomType readRoomType() {
+	 private RoomType readRoomType() {
 		while (true) {
 			System.out.println("Select Room Type:");
 			System.out.println("1. STANDARD");
