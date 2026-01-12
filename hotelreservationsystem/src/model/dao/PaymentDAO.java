@@ -35,9 +35,7 @@ public class PaymentDAO {
     private static final String DELETE_SQL =
             "DELETE FROM payment WHERE payment_id = ?";
 
-    /**
-     * Creates a new payment record.
-     */
+    
     public void createPayment(Payment payment) {
         validatePayment(payment);
 
@@ -56,9 +54,7 @@ public class PaymentDAO {
         }
     }
 
-    /**
-     * Retrieves a payment by ID.
-     */
+    
     public Payment getPaymentById(int paymentId) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_SQL)) {
@@ -78,9 +74,7 @@ public class PaymentDAO {
         throw new InvalidPaymentException("Payment not found with ID: " + paymentId);
     }
 
-    /**
-     * Retrieves payments by booking ID.
-     */
+    
     public List<Payment> getPaymentsByBookingId(int bookingId) {
         List<Payment> payments = new ArrayList<>();
 
@@ -102,9 +96,7 @@ public class PaymentDAO {
         return payments;
     }
 
-    /**
-     * Retrieves all payments.
-     */
+    
     public List<Payment> getAllPayments() {
         List<Payment> payments = new ArrayList<>();
 
@@ -123,9 +115,7 @@ public class PaymentDAO {
         return payments;
     }
 
-    /**
-     * Updates payment status.
-     */
+    
     public void updatePaymentStatus(int paymentId, PaymentStatus status) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_STATUS_SQL)) {
@@ -143,9 +133,7 @@ public class PaymentDAO {
         }
     }
 
-    /**
-     * Deletes payment by ID.
-     */
+    
     public void deletePayment(int paymentId) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_SQL)) {
@@ -162,9 +150,7 @@ public class PaymentDAO {
         }
     }
 
-    /**
-     * Maps ResultSet to Payment entity.
-     */
+    
     private Payment mapResultSetToPayment(ResultSet rs) throws SQLException {
         Payment payment = new Payment();
         payment.setPaymentId(rs.getInt("payment_id"));
@@ -178,9 +164,7 @@ public class PaymentDAO {
         return payment;
     }
 
-    /**
-     * Validates payment object.
-     */
+    
     private void validatePayment(Payment payment) {
         if (payment == null) {
             throw new InvalidPaymentException("Payment cannot be null");
