@@ -32,9 +32,7 @@ public class CustomerDAO {
     private static final String DELETE_CUSTOMER_SQL =
             "DELETE FROM customer WHERE customer_id = ?";
 
-    /**
-     * Creates a new customer.
-     */
+   
     public void createCustomer(Customer customer) {
         validateCustomer(customer);
 
@@ -52,9 +50,7 @@ public class CustomerDAO {
         }
     }
 
-    /**
-     * Retrieves a customer by ID.
-     */
+    
     public Customer getCustomerById(int customerId) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_SQL)) {
@@ -74,9 +70,7 @@ public class CustomerDAO {
         throw new InvalidInputException("Customer not found with ID: " + customerId);
     }
 
-    /**
-     * Retrieves a customer by email.
-     */
+    
     public Customer getCustomerByEmail(String email) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_EMAIL_SQL)) {
@@ -96,9 +90,7 @@ public class CustomerDAO {
         throw new InvalidInputException("Customer not found with email: " + email);
     }
 
-    /**
-     * Retrieves all customers.
-     */
+   
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
 
@@ -117,9 +109,7 @@ public class CustomerDAO {
         return customers;
     }
 
-    /**
-     * Updates customer details.
-     */
+    
     public void updateCustomer(Customer customer) {
         validateCustomer(customer);
 
@@ -141,9 +131,7 @@ public class CustomerDAO {
         }
     }
 
-    /**
-     * Deletes customer by ID.
-     */
+   
     public void deleteCustomer(int customerId) {
         try (Connection connection = DBConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_CUSTOMER_SQL)) {
@@ -160,9 +148,7 @@ public class CustomerDAO {
         }
     }
 
-    /**
-     * Maps ResultSet to Customer entity.
-     */
+    
     private Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
         Customer customer = new Customer();
         customer.setCustomerId(rs.getInt("customer_id"));
@@ -172,9 +158,7 @@ public class CustomerDAO {
         return customer;
     }
 
-    /**
-     * Validates customer object.
-     */
+    
     private void validateCustomer(Customer customer) {
         if (customer == null) {
             throw new InvalidInputException("Customer cannot be null");
