@@ -14,9 +14,7 @@ public class StudentDAO {
         this.connection = connection;
     }
 
-    /**
-     * Saves student and subject marks using a transaction.
-     */
+    
     public void saveStudent(Student student) throws SQLException {
 
         String insertStudentSql =
@@ -42,7 +40,7 @@ public class StudentDAO {
             studentStmt.setString(5, String.valueOf(student.getGrade()));
             studentStmt.executeUpdate();
 
-            // Insert subject marks
+            
             marksStmt = connection.prepareStatement(insertMarksSql);
 
             int subjectNo = 1;
@@ -66,9 +64,7 @@ public class StudentDAO {
         }
     }
 
-    /**
-     * Fetch a student with all subject marks by student ID.
-     */
+    
     public Student getStudentById(int studentId) throws SQLException {
 
         String studentSql =
@@ -84,7 +80,7 @@ public class StudentDAO {
         try (PreparedStatement studentStmt = connection.prepareStatement(studentSql);
              PreparedStatement marksStmt = connection.prepareStatement(marksSql)) {
 
-            // Fetch student
+            
             studentStmt.setInt(1, studentId);
             ResultSet rsStudent = studentStmt.executeQuery();
 
@@ -99,7 +95,7 @@ public class StudentDAO {
                 return null;
             }
 
-            // Fetch subject marks
+           
             marksStmt.setInt(1, studentId);
             ResultSet rsMarks = marksStmt.executeQuery();
 
@@ -113,10 +109,7 @@ public class StudentDAO {
         return student;
     }
 
-    /**
-     * Fetch all students (without subject marks).
-     * Use getStudentById if marks are required.
-     */
+    
     public List<Student> getAllStudents() throws SQLException {
 
         String sql =
@@ -142,9 +135,7 @@ public class StudentDAO {
         return students;
     }
 
-    /**
-     * Deletes a student (subject marks deleted via cascade).
-     */
+  
     public void deleteStudent(int studentId) throws SQLException {
 
         String sql = "DELETE FROM student WHERE student_id = ?";
