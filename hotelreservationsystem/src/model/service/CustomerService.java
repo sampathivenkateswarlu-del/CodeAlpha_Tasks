@@ -14,9 +14,7 @@ public class CustomerService {
         this.customerDAO = new CustomerDAO();
     }
 
-    /**
-     * Creates a new customer.
-     */
+    
     public void createCustomer(String name, String email, String phoneNumber) {
 
         validateCustomerInput(name, email, phoneNumber);
@@ -29,9 +27,7 @@ public class CustomerService {
         customerDAO.createCustomer(customer);
     }
 
-    /**
-     * Retrieves customer by ID.
-     */
+    
     public Customer getCustomerById(int customerId) {
         if (customerId <= 0) {
             throw new InvalidInputException("Invalid customer ID");
@@ -39,9 +35,7 @@ public class CustomerService {
         return customerDAO.getCustomerById(customerId);
     }
 
-    /**
-     * Retrieves customer by email.
-     */
+    
     public Customer getCustomerByEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
             throw new InvalidInputException("Email cannot be empty");
@@ -49,16 +43,12 @@ public class CustomerService {
         return customerDAO.getCustomerByEmail(email.trim());
     }
 
-    /**
-     * Retrieves all customers.
-     */
+    
     public List<Customer> getAllCustomers() {
         return customerDAO.getAllCustomers();
     }
 
-    /**
-     * Updates existing customer details.
-     */
+    
     public void updateCustomer(int customerId,
                                String name,
                                String email,
@@ -79,9 +69,7 @@ public class CustomerService {
         customerDAO.updateCustomer(existingCustomer);
     }
 
-    /**
-     * Deletes customer by ID.
-     */
+    
     public void deleteCustomer(int customerId) {
         if (customerId <= 0) {
             throw new InvalidInputException("Invalid customer ID");
@@ -89,9 +77,7 @@ public class CustomerService {
         customerDAO.deleteCustomer(customerId);
     }
 
-    /**
-     * Centralized input validation.
-     */
+    
     private void validateCustomerInput(String name, String email, String phoneNumber) {
 
         if (name == null || name.trim().isEmpty()) {
